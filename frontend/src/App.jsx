@@ -14,54 +14,54 @@ const App = () => {
   const [jogadores, setJogadores] = useState([
     {
       id: 1,
-      title: 'My Neighbor Totoro',
-      japaneseTitle: 'ともだちトトロ',
-      description: 'In 1950s rural Japan, sisters Satsuki and Mei Kusakabe move to the countryside with their father to be closer to their hospitalized mother...',
+      title: 'Chama Responsa',
+      logo: 'HerdsZ',
+      description: 'Herdz enxerga o jogo como ninguém. Com uma mente afiada, ele lê o mapa como um quebra-cabeça e encontra o gap perfeito para vencer. É o cérebro da FURIA e o terror dos estrategistas rivais.',
       thumbnail: herdzGrande,
       backgroundImage: herdzGrande,
       watchLink: 'https://www.netflix.com/title/60032294'
     },
     {
       id: 2,
-      title: 'A Silent Voice',
-      japaneseTitle: '聲の形',
-      description: 'Shoya Ishida, a young man haunted by the regret of his past, seeks redemption upon reuniting with Shoko Nishimiya...',
+      title: 'O rei do trash talk',
+      logo: ' Jv92',
+      description: 'O rei do trash talk, jv92 joga com a mente dos adversários antes mesmo do primeiro tiro.jv92 guia a equipe com gritos, calls e uma mira que impõe respeito.',
       thumbnail: jv92Grande,
       backgroundImage: jv92Grande,
       watchLink: 'https://www.crunchyroll.com/pt-br/series/GP5HJ84XV/a-silent-voice'
     },
     {
       id: 3,
-      title: 'A Silent Voice',
-      japaneseTitle: '聲の形',
-      description: 'Shoya Ishida, a young man haunted by the regret of his past, seeks redemption upon reuniting with Shoko Nishimiya...',
+      title: 'O Analista',
+      logo: ' Igoorctg',
+      description: 'Mesmo no 6x3, quando todo mundo já largou, Igorctg tá lá — confiante, vibrando e acreditando. Ele é o escudo mental da FURIA, o cara que segura o emocional e puxa a responsa mesmo sem ter mouse na mão.',
       thumbnail: igorctgGrande,
       backgroundImage: igorctgGrande,
       watchLink: 'https://www.crunchyroll.com/pt-br/series/GP5HJ84XV/a-silent-voice'
     },
     {
       id: 4,
-      title: 'A Silent Voice',
-      japaneseTitle: '聲の形',
-      description: 'Shoya Ishida, a young man haunted by the regret of his past, seeks redemption upon reuniting with Shoko Nishimiya...',
+      title: 'Mirinha Dura',
+      logo: ' Kheyze	',
+      description: 'Confiança no talo e dedo pesado, Kheyze não pensa duas vezes. Pode ter 1 de vida ou 5 inimigos na frente — ele bota a mira e amassa.',
       thumbnail: kheyzeGrande,
       backgroundImage: kheyzeGrande,
       watchLink: 'https://www.crunchyroll.com/pt-br/series/GP5HJ84XV/a-silent-voice'
     },
     {
       id: 5,
-      title: 'A Silent Voice',
-      japaneseTitle: '聲の形',
-      description: 'Shoya Ishida, a young man haunted by the regret of his past, seeks redemption upon reuniting with Shoko Nishimiya...',
+      title: 'Impipocavel',
+      logo: 'Nade ',
+      description: 'Com uma leitura de jogo afiada e um domínio absurdo de utilitários, nade transforma informação em eliminação.',
       thumbnail: nadeGrande,
       backgroundImage: nadeGrande,
       watchLink: 'https://www.crunchyroll.com/pt-br/series/GP5HJ84XV/a-silent-voice'
     },
     {
       id: 6,
-      title: 'A Silent Voice',
-      japaneseTitle: '聲の形',
-      description: 'Shoya Ishida, a young man haunted by the regret of his past, seeks redemption upon reuniting with Shoko Nishimiya...',
+      title: 'The Clutch King',
+      logo: ' FelipoX	',
+      description: 'Quando a rodada está por um fio, é Felipox quem resolve. Frieza e clutch são sinônimos do seu jogo.',
       thumbnail: felipoxGrande,
       backgroundImage: felipoxGrande,
       watchLink: 'https://www.crunchyroll.com/pt-br/series/GP5HJ84XV/a-silent-voice'

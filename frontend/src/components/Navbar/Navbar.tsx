@@ -16,18 +16,18 @@ const Navbar = ({ logo }: { logo: string }) => {
       <div className={styles.nav_logo}>{logo}</div>
       <nav className={styles.nav}>
         <ul>
-          <li><a href="#" className={styles.dropdown_links}>Add Movie</a></li>
-          <li><a href="#">Movie List</a></li>
-          <li><a href="#">Trailer Movie</a></li>
+          <li><a href="#" className={styles.dropdown_links}>Fale com a Pantera</a></li>
+          <li><a href="#">Descubra qual tipo de torcedor voce e</a></li>
+          <li><a href="#">Sobre</a></li>
         </ul>
         <div className={styles.toggle_btn} onClick={toggleDropdown}>
           <FaBars />
         </div>
 
         <div className={`${styles.dropdown} ${dropdownOpen ? styles.open : ''}`}>
-          <li><a className={styles.dropdown_links} href="#">Add Movie</a></li>
-          <li><a className={styles.dropdown_links} href="#">Movie List</a></li>
-          <li><a className={styles.dropdown_links} href="#">Trailer Movie</a></li>
+          <li><a className={styles.dropdown_links} href="#">Fale com a Pantera</a></li>
+          <li><a className={styles.dropdown_links} href="#">Descubra qual tipo de torcedor voce e</a></li>
+          <li><a className={styles.dropdown_links} href="#">Sobre</a></li>
         </div>
       </nav>
     </header>

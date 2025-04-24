@@ -11,7 +11,7 @@ interface ThumbnailProps {
 const Thumbnail = ({ jogadores, currentIndex, onThumbnailClick }: ThumbnailProps) => {
   return (
     <div className={styles.thumbnail}>
-      {jogadores.map((jogador, index) => ( // Alterado de movie para jogador
+      {jogadores.map((jogador, index) => ( 
         <div 
           key={jogador.id}
           className={`${styles.item} ${index === currentIndex ? styles.active : ''}`}

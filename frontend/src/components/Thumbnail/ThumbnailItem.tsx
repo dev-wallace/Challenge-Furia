@@ -3,7 +3,7 @@ import { Jogadores } from '../../types/types';
 import styles from './styles.module.css';
 
 interface ThumbnailItemProps {
-  jogador: Jogadores; // Alterado de movie para jogador
+  jogador: Jogadores; 
   active: boolean;
   onClick: () => void;
 }
