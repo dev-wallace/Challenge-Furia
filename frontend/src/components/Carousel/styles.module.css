@@ -1,0 +1,227 @@
+.carousel {
+    position: relative; 
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    overflow: hidden;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.list {
+    width: 100%;
+    height: 100%;
+}
+
+.item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    inset: 0 0 0 0;
+    position: fixed;
+}
+
+.item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.37);
+    z-index: 1;
+}
+
+.item img {
+    width: 100%; 
+    height: auto; 
+    object-fit: cover;
+    position: absolute;
+}
+
+.item:nth-child(1) {
+    z-index: 1;
+}
+
+.item:nth-child(1) .title,
+.item:nth-child(1) .paragrafo,
+.item:nth-child(1) .watch_now {
+    opacity: 1;
+    transform: translateY(50px);
+    animation: showContent 0.4 1s linear forwards;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.main_text {
+    position: absolute;
+    max-width: 50em;
+    top: 10em;
+    left: 5em;
+    z-index: 2;
+    margin-bottom: 50px;
+}
+
+.main_text h3 {
+    font-size: 14px;
+    font-weight: 400;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.title {
+    font-size: 60px;
+    line-height: 1;
+    color: white;
+    margin: 0px 0px 45px;
+    font-family: 'Permanent Marker', cursive;
+}
+
+.paragrafo {
+    max-width: 100%;
+    width: 480px;
+    color: white;
+    line-height: 1.8;
+    font-size: 17px;
+    margin-bottom: 50px;
+}
+
+/* Estilos para o botão Watch Now */
+.watch_now {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .watch_now_text {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+  }
+  
+  .watch_now_icon {
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  
+ 
+  .watch_now:hover {
+    background-color: #181717;
+    color: #fff;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+  }
+  
+  .watch_now:hover .watch_now_text {
+    transform: translateX(-5px);
+  }
+  
+  .watch_now:hover .watch_now_icon {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  /* Efeito de fundo animado */
+  .watch_now::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #272424);
+    background-size: 400%;
+    opacity: 0;
+    transition: 0.5s;
+    z-index: 1;
+    border-radius: 30px;
+  }
+  
+  .watch_now:hover::before {
+    opacity: 0.2;
+    animation:  8s linear infinite;
+  }
+  
+
+@media (max-width: 1401px) {
+    .item .content .title {
+        font-size: 32px; 
+    }
+
+    .item .content .paragrafo {
+        font-size: 17px;
+    }
+    
+    .watch_now {
+        position: relative;
+        top: -140px;
+        right: 20px;
+    }
+    
+    .title {
+        position: relative;
+        top: -90px;
+    }
+
+    .paragrafo {
+        position: relative;
+        top: -100px;
+    }
+}
+
+@media (max-width: 1300px) {
+    .item .content .title {
+        font-size: 30px; 
+    }
+
+    .item .content .paragrafo {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 500px) {
+    .item .content .title {
+        font-size: 20px; 
+    }
+
+    .item .content .paragrafo {
+        font-size: 12px;
+    }
+    
+    .paragrafo {
+        right: 30px;
+    }
+}
+
+@media screen and (max-width: 678px) {
+    .item .content .title {
+        font-size: 20px; 
+    }
+
+    .item .content .paragrafo {
+        font-size: 12px;
+    }
+}

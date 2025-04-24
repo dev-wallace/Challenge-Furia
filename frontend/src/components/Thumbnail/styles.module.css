@@ -1,0 +1,74 @@
+.thumbnail{
+    position: fixed;
+    bottom: 50px;
+    left: 17%;
+    width: max-content;
+    z-index: 100;
+    display: flex;
+    gap: 20px;
+
+}
+
+.thumbnail .item{
+    width: 150px;
+    height: 220px;
+    flex-shrink: 0;
+    position: relative;
+    transition: ease 0.5s;
+}
+
+
+
+
+.thumbnail .item img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+
+}
+
+.thumbnail .item .content{
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+
+
+}
+.thumbnail {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+    flex-direction: row; /* Garante que fique em linha */
+    flex-wrap: wrap; /* Permite quebrar linha se necessário */
+    max-width: 80%; /* Limita a largura máxima */
+    justify-content: flex-end; /* Alinha à direita */
+  }
+  
+  .item {
+    width: 80px;
+    height: 120px;
+    flex-shrink: 0;
+    position: relative;
+    transition: transform 0.3s ease;
+    border-radius: 5px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+  }
+  
+  .item:hover {
+    transform: scale(1.1);
+  }
+  
+ 
+  
+  .item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }

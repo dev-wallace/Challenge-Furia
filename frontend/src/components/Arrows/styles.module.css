@@ -1,0 +1,72 @@
+.arrows {
+    z-index: 10000;
+    position: fixed;
+    top: 82%;
+    right: 74%;
+    width: 300px;
+    max-width: 30%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.arrows button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #eee4;
+    border: none;
+    font-family: monospace;
+    color: #fff;
+    font-weight: bold;
+    font-size: large;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.arrows button:hover {
+    background-color: #fff;
+    color: #555;
+}
+
+/* Responsive styles */
+@media (max-width: 1401px) {
+    .arrows {
+        left: 33%;
+    }
+}
+
+@media (max-width: 911px) {
+    .arrows {
+        left: 28%;
+        top: 82%;
+        right: 68%;
+        gap: 10px;
+    }
+
+    .arrows button {
+        width: 30px;
+        height: 30px;
+        font-size: medium;
+    }
+}
+
+@media (max-width: 650px) {
+    .arrows {
+        top: 82%;
+        right: 74%;
+        gap: 10px;
+    }
+
+    .arrows button {
+        width: 25px;
+        height: 25px;
+        font-size: small;
+    }
+}
+
+@media (max-width: 500px) {
+    .arrows {
+        left: 30%;
+    }
+}
