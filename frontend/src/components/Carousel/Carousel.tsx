@@ -40,7 +40,7 @@ const Carousel = ({ jogadores }: CarouselProps) => {
         {jogadores.map((jogador, index) => (
           <CarouselItem
             key={jogador.id}
-            jogadores={jogador}  // Corrigido o nome da prop
+            jogadores={jogador}  
             active={index === currentIndex}
             onWatchNow={() => window.open(jogador.watchLink, '_blank')}
           />
@@ -55,9 +55,7 @@ const Carousel = ({ jogadores }: CarouselProps) => {
 
       <Arrows onPrev={prevSlide} onNext={nextSlide} />
       
-      <button onClick={openPopup} className={styles.addButton}>
-        Add Movie
-      </button>
+
 
       <Popup isOpen={isPopupOpen} onClose={closePopup} />
     </div>

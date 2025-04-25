@@ -15,7 +15,7 @@ const CarouselItem = ({ jogadores, active, onWatchNow }: CarouselItemProps) => {
   return (
     <div className={styles.item}>
       <img src={jogadores.backgroundImage} alt={jogadores.title} />
-      <Navbar logo={jogadores.logo} /> {/* Alterado para jogadores.logo */}
+      <Navbar logo={jogadores.logo} /> {}
       
       <div className={styles.content}>
         <div className={styles.main_text}>
@@ -25,7 +25,7 @@ const CarouselItem = ({ jogadores, active, onWatchNow }: CarouselItemProps) => {
             onClick={onWatchNow}
             className={styles.watch_now}
           >
-            Watch Now
+            Highlights
           </button>
         </div>
       </div>
