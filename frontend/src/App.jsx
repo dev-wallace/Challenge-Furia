@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Carousel from './components/Carousel/Carousel';
 import './styles/global.css';
+import ChatBubble from './components/ChatBubble/ChatBubble'; 
 
 import jv92Grande from './assets/jv92_in_Furia_grande.jpg';
 import herdzGrande from './assets/Herdsz-grande.jpg'
@@ -73,6 +74,7 @@ const App = () => {
   return (
     <div className="App">
       <Carousel jogadores={jogadores} />
+      <ChatBubble /> 
     </div>
   );
 };

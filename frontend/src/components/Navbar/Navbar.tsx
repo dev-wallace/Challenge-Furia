@@ -20,15 +20,9 @@ const Navbar = ({ logo }: { logo: string }) => {
           <li><a href="#">Descubra qual tipo de torcedor voce e</a></li>
           <li><a href="#">Sobre</a></li>
         </ul>
-        <div className={styles.toggle_btn} onClick={toggleDropdown}>
-          <FaBars />
-        </div>
+      
 
-        <div className={`${styles.dropdown} ${dropdownOpen ? styles.open : ''}`}>
-          <li><a className={styles.dropdown_links} href="#">Fale com a Pantera</a></li>
-          <li><a className={styles.dropdown_links} href="#">Descubra qual tipo de torcedor voce e</a></li>
-          <li><a className={styles.dropdown_links} href="#">Sobre</a></li>
-        </div>
+      
       </nav>
     </header>
   );

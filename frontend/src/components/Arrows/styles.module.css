@@ -2,7 +2,7 @@
     z-index: 10000;
     position: fixed;
     top: 82%;
-    right: 74%;
+    right: 79%;
     width: 300px;
     max-width: 30%;
     display: flex;
@@ -29,7 +29,7 @@
     color: #555;
 }
 
-/* Responsive styles */
+
 @media (max-width: 1401px) {
     .arrows {
         left: 33%;

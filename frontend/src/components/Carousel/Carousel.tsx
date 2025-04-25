@@ -10,7 +10,6 @@ import React from 'react';
 interface CarouselProps {
   jogadores: Jogadores[];
 }
-
 const Carousel = ({ jogadores }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPopupOpen, setIsPopupOpen] = useState(false);

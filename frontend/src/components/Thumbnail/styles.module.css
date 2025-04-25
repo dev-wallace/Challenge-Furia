@@ -15,6 +15,7 @@
     flex-shrink: 0;
     position: relative;
     transition: ease 0.5s;
+    right: 10%;
 }
 
 
@@ -30,7 +31,7 @@
 
 .thumbnail .item .content{
     position: absolute;
-    bottom: 10px;
+    bottom: 100px;
     left: 10px;
     right: 10px;
 
@@ -43,10 +44,10 @@
     display: flex;
     gap: 15px;
     z-index: 100;
-    flex-direction: row; /* Garante que fique em linha */
-    flex-wrap: wrap; /* Permite quebrar linha se necessário */
-    max-width: 80%; /* Limita a largura máxima */
-    justify-content: flex-end; /* Alinha à direita */
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    max-width: 80%; 
+    justify-content: flex-end; 
   }
   
   .item {

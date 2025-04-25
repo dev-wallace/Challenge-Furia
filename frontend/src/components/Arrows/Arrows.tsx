@@ -1,6 +1,6 @@
 // src/components/Arrows/Arrows.tsx
 import React from 'react';
-import styles from './styles.module.css';
+import styles from './styles.module.css'; // Ensure the file exists
 
 const Arrows = ({ onPrev, onNext }: { onPrev: () => void; onNext: () => void }) => {
   return (
