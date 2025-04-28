@@ -1,36 +1,37 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
-
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
-// Configuração básica
-app.use(cors()); // Permite todas as origens (apenas para desenvolvimento!)
+// Banco de dados simples em memória
+const messagesDB = [];
+
+app.use(cors());
 app.use(express.json());
 
-// Rota do chat
-app.post('/api/chat', async (req, res) => {
-  try {
-    const { message } = req.body;
-    
-    if (!message) {
-      return res.status(400).json({ error: "Mensagem é obrigatória" });
-    }
+// Rota POST para receber mensagens
+app.post('/chat', (req, res) => {
+  const { message } = req.body;
+  console.log("Mensagem recebida:", message);
+  
+  // Salva no "banco de dados"
+  messagesDB.push({
+    id: Date.now(),
+    text: message,
+    sender: 'user',
+    timestamp: new Date()
+  });
 
-   
-
-    res.json({ reply });
-
-  } catch (error) {
-    console.error('Erro:', error);
-    res.status(500).json({ error: "Erro no servidor" });
-  }
+  res.json({ 
+    reply: `Mensagem recebida: "${message}"` 
+  });
 });
 
-// Rota de teste
-app.get('/', (req, res) => {
-  res.send('Backend do Chat está funcionando!');
+// Rota GET para visualizar todas as mensagens
+app.get('/chat', (req, res) => {
+  res.json({
+    messages: messagesDB
+  });
 });
 
 app.listen(PORT, () => {

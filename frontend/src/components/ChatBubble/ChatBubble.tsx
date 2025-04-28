@@ -34,51 +34,45 @@ const ChatBubble = () => {
   }, [messages]);
 
   const handleSendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
-
+    if (!inputMessage.trim()) return;
+  
     // Adiciona mensagem do usuário
-    const userMessage: Message = {
+    const userMessage = {
       id: Date.now().toString(),
       text: inputMessage,
-      sender: 'user',
+      sender: 'user' as const,
       timestamp: new Date()
     };
-    
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
-    setIsLoading(true);
-
+  
     try {
-      const response = await fetch(WEBHOOK_URL, {
+      const response = await fetch('http://localhost:3001/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ message: inputMessage })
       });
-
-      if (!response.ok) {
-        throw new Error('Erro na resposta do servidor');
-      }
-
+  
+      if (!response.ok) throw new Error('Erro na resposta');
+  
       const data = await response.json();
-      
-      // Adiciona resposta do bot (assumindo que o n8n retorna { reply: string })
       setMessages(prev => [...prev, {
         id: Date.now().toString(),
         text: data.reply,
-        sender: 'bot',
+        sender: 'bot' as const,
         timestamp: new Date()
       }]);
-
+  
     } catch (error) {
-      console.error('Erro ao enviar mensagem:', error);
+      console.error('Erro:', error);
       setMessages(prev => [...prev, {
         id: Date.now().toString(),
-        text: 'Putz, deu ruim na conexão! Tenta de novo...',
-        sender: 'bot',
+        text: 'Erro ao enviar mensagem',
+        sender: 'bot' as const,
         timestamp: new Date()
       }]);
-    } finally {
-      setIsLoading(false);
     }
   };
 
