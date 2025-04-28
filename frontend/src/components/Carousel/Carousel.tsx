@@ -46,11 +46,7 @@ const Carousel = ({ jogadores }: CarouselProps) => {
         ))}
       </div>
 
-      <Thumbnail
-        jogadores={jogadores}
-        currentIndex={currentIndex}
-        onThumbnailClick={goToSlide}
-      />
+
 
       <Arrows onPrev={prevSlide} onNext={nextSlide} />
       
