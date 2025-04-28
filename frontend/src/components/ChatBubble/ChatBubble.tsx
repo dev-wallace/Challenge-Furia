@@ -27,6 +27,7 @@ const ChatBubble = () => {
 
   // Configuração do Webhook (substitua pela sua URL do n8n)
   const WEBHOOK_URL = 'http://localhost:5678/webhook/furia-chat';
+  
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
