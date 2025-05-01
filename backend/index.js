@@ -1,39 +1,41 @@
 const express = require('express');
-const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3001;
 
-// Banco de dados simples em memória
-const messagesDB = [];
+// Configuração do webhook
+app.use(bodyParser.json());
 
-app.use(cors());
-app.use(express.json());
+// "Banco de dados" em memória
+const messageHistory = [];
 
-// Rota POST para receber mensagens
-app.post('/chat', (req, res) => {
+// Rota do webhook
+app.post('/webhook', (req, res) => {
   const { message } = req.body;
-  console.log("Mensagem recebida:", message);
   
-  // Salva no "banco de dados"
-  messagesDB.push({
+  console.log('Mensagem recebida via webhook:', message);
+  
+  // Armazena a mensagem
+  messageHistory.push({
     id: Date.now(),
     text: message,
-    sender: 'user',
     timestamp: new Date()
   });
 
+  // Resposta simulada da IA
+  const iaResponse = `Resposta para: "${message}"`;
+  
   res.json({ 
-    reply: `Mensagem recebida: "${message}"` 
+    status: 'success',
+    reply: iaResponse
   });
 });
 
-// Rota GET para visualizar todas as mensagens
-app.get('/chat', (req, res) => {
-  res.json({
-    messages: messagesDB
-  });
+// Rota para ver histórico (opcional)
+app.get('/messages', (req, res) => {
+  res.json(messageHistory);
 });
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Webhook rodando em http://localhost:${PORT}/webhook`);
 });

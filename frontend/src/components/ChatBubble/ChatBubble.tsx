@@ -36,7 +36,7 @@ const ChatBubble = () => {
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
   
-    // Adiciona mensagem do usuário
+    // Adiciona mensagem do usuário ao chat
     const userMessage = {
       id: Date.now().toString(),
       text: inputMessage,
@@ -45,22 +45,27 @@ const ChatBubble = () => {
     };
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
+    setIsLoading(true);
   
     try {
-      const response = await fetch('http://localhost:3001/chat', {
+      // Envia para o webhook do n8n
+      const response = await fetch('http://localhost:5678/webhook-test/furia-tweet', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: inputMessage })
+        body: JSON.stringify({ 
+          message: inputMessage,
+          userId: 'user123' // Identificador único do usuário
+        })
       });
   
-      if (!response.ok) throw new Error('Erro na resposta');
-  
       const data = await response.json();
+  
+      // Adiciona resposta ao chat
       setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        text: data.reply,
+        id: Date.now().toString() + '-bot',
+        text: data.reply, // Resposta do n8n
         sender: 'bot' as const,
         timestamp: new Date()
       }]);
@@ -68,11 +73,13 @@ const ChatBubble = () => {
     } catch (error) {
       console.error('Erro:', error);
       setMessages(prev => [...prev, {
-        id: Date.now().toString(),
-        text: 'Erro ao enviar mensagem',
+        id: Date.now().toString() + '-error',
+        text: 'Erro ao conectar com o serviço',
         sender: 'bot' as const,
         timestamp: new Date()
       }]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
