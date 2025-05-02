@@ -177,3 +177,25 @@
     margin-left: 1rem;
     
   }
+  .progress {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  .progressBar {
+    height: 4px;
+    background: #4CAF50;
+    border-radius: 2px;
+    margin-bottom: 4px;
+    transition: width 0.3s ease;
+  }
+  
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }

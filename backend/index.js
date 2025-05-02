@@ -1,41 +1,54 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const axios = require('axios');
+const cors = require('cors');
 const app = express();
 const PORT = 3001;
 
-// Configuração do webhook
-app.use(bodyParser.json());
+// Configurações básicas
+app.use(cors());
+app.use(bodyParser.json({ limit: '15mb' }));
 
-// "Banco de dados" em memória
-const messageHistory = [];
+// Rota principal do chat
+app.post('/chat', async (req, res) => {
+  try {
+    const { message, userId } = req.body;
 
-// Rota do webhook
-app.post('/webhook', (req, res) => {
-  const { message } = req.body;
-  
-  console.log('Mensagem recebida via webhook:', message);
-  
-  // Armazena a mensagem
-  messageHistory.push({
-    id: Date.now(),
-    text: message,
-    timestamp: new Date()
-  });
+    if (!message) {
+      return res.status(400).json({ 
+        status: 'error',
+        error: "Message is required" 
+      });
+    }
 
-  // Resposta simulada da IA
-  const iaResponse = `Resposta para: "${message}"`;
-  
-  res.json({ 
-    status: 'success',
-    reply: iaResponse
-  });
-});
+    // Envia para o n8n
+    const n8nResponse = await axios.post('http://localhost:5678/webhook/furia-tweet', {
+      message,
+      userId: userId || 'anonymous'
+    }, {
+      timeout: 20000,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
 
-// Rota para ver histórico (opcional)
-app.get('/messages', (req, res) => {
-  res.json(messageHistory);
+    // Retorna a resposta formatada
+    res.json({
+      status: 'success',
+      reply: n8nResponse.data.message || n8nResponse.data.reply
+    });
+
+  } catch (error) {
+    console.error('Chat error:', error);
+    res.status(500).json({
+      status: 'error',
+      error: error.message,
+      reply: 'Erro ao processar sua mensagem'
+    });
+  }
 });
 
 app.listen(PORT, () => {
-  console.log(`Webhook rodando em http://localhost:${PORT}/webhook`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

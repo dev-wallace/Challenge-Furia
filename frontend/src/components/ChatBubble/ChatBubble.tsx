@@ -7,8 +7,26 @@ import React from 'react';
 interface Message {
   id: string;
   text: string;
-  sender: 'user' | 'bot';
+  sender: 'user' | 'bot' | 'system';
   timestamp: Date;
+}
+
+interface PartialMessage {
+  message_id: string;
+  chunks: string[];
+  total_chunks: number;
+  received_chunks: number;
+  original_length: number;
+}
+
+interface ApiResponse {
+  status: 'success' | 'partial' | 'error';
+  message?: string;
+  reply?: string;
+  chunk?: number;
+  total_chunks?: number;
+  message_id?: string;
+  original_length?: number;
 }
 
 const ChatBubble = () => {
@@ -23,59 +41,124 @@ const ChatBubble = () => {
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [partialMessages, setPartialMessages] = useState<Record<string, PartialMessage>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Configuração do Webhook (substitua pela sua URL do n8n)
-  const WEBHOOK_URL = 'http://localhost:5678/webhook/furia-chat';
-  
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, partialMessages]);
+
+  const fetchAllChunks = async (messageId: string, totalChunks: number) => {
+    const chunks: string[] = [];
+    for (let i = 1; i <= totalChunks; i++) {
+      try {
+        const response = await fetch(`http://localhost:3001/get-chunk/${messageId}/${i}`);
+        if (!response.ok) throw new Error(`Failed to fetch chunk ${i}`);
+        const chunkData = await response.json();
+        chunks.push(chunkData.message);
+        
+        setPartialMessages(prev => ({
+          ...prev,
+          [messageId]: {
+            ...prev[messageId],
+            received_chunks: i,
+            chunks: [...chunks]
+          }
+        }));
+        
+      } catch (error) {
+        console.error(`Erro ao buscar chunk ${i}:`, error);
+        chunks.push(`[parte ${i} faltando]`);
+      }
+    }
+    return chunks.join('');
+  };
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
-  
+
     // Adiciona mensagem do usuário ao chat
-    const userMessage = {
+    const userMessage: Message = {
       id: Date.now().toString(),
       text: inputMessage,
-      sender: 'user' as const,
+      sender: 'user',
       timestamp: new Date()
     };
+    
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
-  
+
     try {
-      // Envia para o webhook do n8n
-      const response = await fetch('http://localhost:5678/webhook-test/furia-tweet', {
+      // Envia para o backend
+      const response = await fetch('http://localhost:3001/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ 
           message: inputMessage,
-          userId: 'user123' // Identificador único do usuário
+          userId: 'user123'
         })
       });
-  
-      const data = await response.json();
-  
-      // Adiciona resposta ao chat
-      setMessages(prev => [...prev, {
-        id: Date.now().toString() + '-bot',
-        text: data.reply, // Resposta do n8n
-        sender: 'bot' as const,
-        timestamp: new Date()
-      }]);
-  
+
+      const data: ApiResponse = await response.json();
+
+      // Validação da resposta
+      if (!response.ok) {
+        throw new Error(data.message || 'Erro na resposta do servidor');
+      }
+
+      // Se for resposta chunked
+      if (data.status === 'partial' && data.message_id && data.total_chunks) {
+        // Inicializa o estado parcial
+        setPartialMessages(prev => ({
+          ...prev,
+          [data.message_id]: {
+            message_id: data.message_id,
+            chunks: [data.message || data.reply || ''],
+            total_chunks: data.total_chunks,
+            received_chunks: 1,
+            original_length: data.original_length || 0
+          }
+        }));
+
+        // Busca todos os chunks
+        const fullMessage = await fetchAllChunks(data.message_id, data.total_chunks);
+
+        // Adiciona a mensagem completa
+        setMessages(prev => [...prev, {
+          id: data.message_id,
+          text: fullMessage,
+          sender: 'bot',
+          timestamp: new Date()
+        }]);
+
+        // Remove do estado parcial
+        setPartialMessages(prev => {
+          const newState = { ...prev };
+          delete newState[data.message_id!];
+          return newState;
+        });
+
+      } else if (data.reply || data.message) {
+        // Se for resposta completa
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          text: data.reply || data.message!,
+          sender: 'bot',
+          timestamp: new Date()
+        }]);
+      } else {
+        throw new Error('Resposta inválida do servidor');
+      }
+
     } catch (error) {
       console.error('Erro:', error);
       setMessages(prev => [...prev, {
-        id: Date.now().toString() + '-error',
-        text: 'Erro ao conectar com o serviço',
-        sender: 'bot' as const,
+        id: Date.now().toString(),
+        text: error instanceof Error ? error.message : 'Erro ao conectar com o serviço',
+        sender: 'system',
         timestamp: new Date()
       }]);
     } finally {
@@ -134,7 +217,31 @@ const ChatBubble = () => {
                 </div>
               </div>
             ))}
-            {isLoading && (
+
+            {Object.values(partialMessages).map(msg => (
+              <div key={msg.message_id} className={`${styles.message} ${styles.botMessage}`}>
+                <div className={styles.messageText}>
+                  {msg.chunks.map((chunk, i) => (
+                    <React.Fragment key={i}>
+                      {chunk.split('\n').map((line, j) => (
+                        <p key={j}>{line}</p>
+                      ))}
+                    </React.Fragment>
+                  ))}
+                  <div className={styles.progress}>
+                    <div 
+                      className={styles.progressBar} 
+                      style={{ width: `${(msg.received_chunks / msg.total_chunks) * 100}%` }}
+                    />
+                    <span>
+                      Carregando ({msg.received_chunks}/{msg.total_chunks})
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {isLoading && !Object.keys(partialMessages).length && (
               <div className={`${styles.message} ${styles.botMessage}`}>
                 <FaSpinner className={styles.spinner} />
               </div>
