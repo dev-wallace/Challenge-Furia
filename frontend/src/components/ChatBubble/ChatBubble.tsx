@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from 'react';
 import styles from './styles.module.css';
 import { FaComment, FaTimes, FaPaperPlane, FaSpinner } from 'react-icons/fa';
@@ -36,7 +37,7 @@ const ChatBubble = () => {
       id: '1',
       text: 'Fala meu mano, o que você quer saber hoje?',
       sender: 'bot',
-      timestamp: new Date()
+      timestamp: new Date(),
     }
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -44,9 +45,21 @@ const ChatBubble = () => {
   const [partialMessages, setPartialMessages] = useState<Record<string, PartialMessage>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const initialOptions = [
+    'Quando a FURIA CS:GO joga?',
+    'Qual é o próximo jogo da FURIA R6?',
+    'Que tipo de fã da FURIA você é?',
+    'Qual é o último tweet da FURIA?',
+    'Bora conversar'
+  ];
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, partialMessages]);
+
+  const handleOptionClick = (option: string) => {
+    setInputMessage(option);
+  };
 
   const fetchAllChunks = async (messageId: string, totalChunks: number) => {
     const chunks: string[] = [];
@@ -56,7 +69,7 @@ const ChatBubble = () => {
         if (!response.ok) throw new Error(`Failed to fetch chunk ${i}`);
         const chunkData = await response.json();
         chunks.push(chunkData.message);
-        
+
         setPartialMessages(prev => ({
           ...prev,
           [messageId]: {
@@ -65,7 +78,7 @@ const ChatBubble = () => {
             chunks: [...chunks]
           }
         }));
-        
+
       } catch (error) {
         console.error(`Erro ao buscar chunk ${i}:`, error);
         chunks.push(`[parte ${i} faltando]`);
@@ -77,20 +90,18 @@ const ChatBubble = () => {
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
 
-    // Adiciona mensagem do usuário ao chat
     const userMessage: Message = {
       id: Date.now().toString(),
       text: inputMessage,
       sender: 'user',
       timestamp: new Date()
     };
-    
+
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
 
     try {
-      // Envia para o backend
       const response = await fetch('http://localhost:3001/chat', {
         method: 'POST',
         headers: {
@@ -98,35 +109,32 @@ const ChatBubble = () => {
         },
         body: JSON.stringify({ 
           message: inputMessage,
-          userId: 'user123'
+          userId: 'user1010'
         })
       });
 
       const data: ApiResponse = await response.json();
 
-      // Validação da resposta
       if (!response.ok) {
         throw new Error(data.message || 'Erro na resposta do servidor');
       }
 
-      // Se for resposta chunked
       if (data.status === 'partial' && data.message_id && data.total_chunks) {
-        // Inicializa o estado parcial
-        setPartialMessages(prev => ({
-          ...prev,
-          [data.message_id]: {
-            message_id: data.message_id,
-            chunks: [data.message || data.reply || ''],
-            total_chunks: data.total_chunks,
-            received_chunks: 1,
-            original_length: data.original_length || 0
-          }
-        }));
+        if (data.message_id) {
+          setPartialMessages(prev => ({
+                    ...prev,
+                    [data.message_id]: {
+                      message_id: data.message_id,
+                      chunks: [data.message || data.reply || ''],
+                      total_chunks: data.total_chunks,
+                      received_chunks: 1,
+                      original_length: data.original_length || 0
+                    }
+                  }));
+        }
 
-        // Busca todos os chunks
         const fullMessage = await fetchAllChunks(data.message_id, data.total_chunks);
 
-        // Adiciona a mensagem completa
         setMessages(prev => [...prev, {
           id: data.message_id,
           text: fullMessage,
@@ -134,7 +142,6 @@ const ChatBubble = () => {
           timestamp: new Date()
         }]);
 
-        // Remove do estado parcial
         setPartialMessages(prev => {
           const newState = { ...prev };
           delete newState[data.message_id!];
@@ -142,7 +149,6 @@ const ChatBubble = () => {
         });
 
       } else if (data.reply || data.message) {
-        // Se for resposta completa
         setMessages(prev => [...prev, {
           id: Date.now().toString(),
           text: data.reply || data.message!,
@@ -198,7 +204,7 @@ const ChatBubble = () => {
               <FaTimes />
             </button>
           </div>
-          
+
           <div className={styles.chatMessages}>
             {messages.map((message) => (
               <div 
@@ -211,6 +217,20 @@ const ChatBubble = () => {
                   {message.text.split('\n').map((line, i) => (
                     <p key={i}>{line}</p>
                   ))}
+
+                  {message.id === '1' && message.sender === 'bot' && (
+                    <div className={styles.optionsContainer}>
+                      {initialOptions.map((option, index) => (
+                        <button
+                          key={index}
+                          className={styles.optionButton}
+                          onClick={() => handleOptionClick(option)}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className={styles.messageTime}>
                   {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -248,7 +268,7 @@ const ChatBubble = () => {
             )}
             <div ref={messagesEndRef} />
           </div>
-          
+
           <div className={styles.chatInput}>
             <input
               type="text"

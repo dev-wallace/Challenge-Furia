@@ -17,7 +17,7 @@ const Navbar = ({ logo }: { logo: string }) => {
       <nav className={styles.nav}>
         <ul>
           <li><a href="#" className={styles.dropdown_links}>Fale com a Pantera</a></li>
-          <li><a href="#">Descubra qual tipo de torcedor voce e</a></li>
+          <li><a href="#">Descubra que tipo de torcedor você é</a></li>
           <li><a href="#">Sobre</a></li>
         </ul>
       
