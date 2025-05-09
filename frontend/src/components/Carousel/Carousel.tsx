@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import CarouselItem from './CarouselItem';
-import Thumbnail from '../Thumbnail/Thumbnail';
+
 import Arrows from '../Arrows/Arrows';
-import Popup from '../Popup/Popup';
+
 import styles from './styles.module.css';
 import { Jogadores } from '../../types/types';
 import React from 'react';
@@ -30,8 +30,7 @@ const Carousel = ({ jogadores }: CarouselProps) => {
     setCurrentIndex(index);
   };
 
-  const openPopup = () => setIsPopupOpen(true);
-  const closePopup = () => setIsPopupOpen(false);
+ 
 
   return (
     <div className={styles.carousel}>
@@ -52,7 +51,7 @@ const Carousel = ({ jogadores }: CarouselProps) => {
       
 
 
-      <Popup isOpen={isPopupOpen} onClose={closePopup} />
+     
     </div>
   );
 };
