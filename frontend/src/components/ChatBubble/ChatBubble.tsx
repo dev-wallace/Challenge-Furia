@@ -109,7 +109,7 @@ const ChatBubble = () => {
         },
         body: JSON.stringify({ 
           message: inputMessage,
-          userId: 'user1010'
+          userId: 'user5454453'
         })
       });
 
