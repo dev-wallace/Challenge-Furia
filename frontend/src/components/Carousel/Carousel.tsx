@@ -12,7 +12,7 @@ interface CarouselProps {
 }
 const Carousel = ({ jogadores }: CarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => 
@@ -26,9 +26,7 @@ const Carousel = ({ jogadores }: CarouselProps) => {
     );
   };
 
-  const goToSlide = (index: number) => {
-    setCurrentIndex(index);
-  };
+
 
  
 

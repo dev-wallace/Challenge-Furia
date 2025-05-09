@@ -1,7 +1,7 @@
 // src/components/Navbar/Navbar.tsx
 import { useState } from 'react';
 import styles from './styles.module.css';
-import { FaBars } from 'react-icons/fa';
+
 import React from 'react';
 
 const Navbar = ({ logo }: { logo: string }) => {
